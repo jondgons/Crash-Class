@@ -44,30 +44,37 @@ namespace Crash_Class
 
             while (read.Read()) // loops over database call
             {
-                data += read[0].ToString() + " - " + read[1].ToString() + ", " + read[2].ToString() + "\n";
+                data += read[0].ToString() + ": " + read[2].ToString() + ", " + read[1].ToString() + "\n";
             }
 
-            read.Close();
+            DisplayArea.Text = data; // displays data
 
+            read.Close();
+            cn.Close();
+        }
+
+        private void SeeEmployees_Click(object sender, RoutedEventArgs e)
+        {
             // querying Employees
-            query = "select* from Employees";
+            string query = "select* from Employees"; // query string
 
-            cmd = new OleDbCommand(query, cn);
+            OleDbCommand cmd = new OleDbCommand(query, cn);
 
-            read = cmd.ExecuteReader();
+            cn.Open(); // connect to the database
 
-            string names = "";
+            OleDbDataReader read = cmd.ExecuteReader(); // reads result
 
-            while (read.Read())
+            string data = ""; // holder string
+
+            while (read.Read()) // loops over database call
             {
-                names += read[1].ToString() + " " + read[2].ToString() + "\n";
+                data += read[0].ToString() + ": " + read[1].ToString() + " " + read[2].ToString() + "\n";
             }
 
-            DisplayArea.Text = data + names; // displays data
+            DisplayArea.Text = data; // displays data
 
             read.Close();
-
-            cn.Close(); // close database
+            cn.Close();
         }
     }
 }
